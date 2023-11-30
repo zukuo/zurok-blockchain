@@ -50,9 +50,8 @@ func NewGenesisBlock() *Block {
 
 func NewBlock(data string, prevHash []byte) *Block {
 	block := &Block{time.Now().Unix(), []byte(data), []byte{}, prevHash, 0}
-	// block.SetHash()
 
-	// New PoW
+	// Setup PoW
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 	block.Hash = hash[:]

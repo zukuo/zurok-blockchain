@@ -4,13 +4,17 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-const dbFile = "blockchain_%s.db"
+const dbFile = "blockchain.db"
 const blocksBucket = "blocks"
 
 // Blockchain Type
 type Blockchain struct {
 	tip []byte
 	db  *bolt.DB
+}
+
+func (bc *Blockchain) GetDB() *bolt.DB {
+	return bc.db
 }
 
 func (bc *Blockchain) GetBlocks() [][]byte {
