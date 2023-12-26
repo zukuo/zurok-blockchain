@@ -6,9 +6,6 @@ import (
 
 // Test Blockchain
 func main() {
-	bc := blockchain.NewBlockchain()
-	defer bc.GetDB().Close()
-
-	cli := blockchain.CreateCLI(bc)
+	cli := blockchain.CLI{}
 	cli.Run()
 }
