@@ -14,10 +14,6 @@ type Wallet struct {
 	PublicKey  []byte
 }
 
-type Wallets struct {
-	Wallets map[string]*Wallet
-}
-
 const version = byte(0x00)
 const walletFile = "wallet.dat"
 const addressChecksumLen = 4
