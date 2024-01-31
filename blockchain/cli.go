@@ -3,16 +3,12 @@ package blockchain
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 )
 
 type CLI struct {}
-
-// Create CLI
-// func CreateCLI(bc *Blockchain) CLI {
-//     return CLI{bc}
-// }
 
 // Validate and check inputs
 func (cli *CLI) printUsage() {
@@ -38,11 +34,16 @@ func (cli *CLI) createBlockchain(address string) {
 }
 
 func (cli *CLI) getBalance(address string) {
+    if !ValidateAddress(address) {
+        log.Panic("ERROR: Invalid address")
+    }
     bc := NewBlockchain(address)
     defer bc.db.Close()
 
     balance := 0
-    UTXOs := bc.FindUTXO(address)
+    pubKeyHash := Base58Decode([]byte(address))
+    pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
+    UTXOs := bc.FindUTXO(pubKeyHash)
 
     for _, out := range UTXOs {
         balance += out.Value

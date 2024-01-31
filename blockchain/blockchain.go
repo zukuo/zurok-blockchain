@@ -106,7 +106,7 @@ func (bc *Blockchain) FindUnspentTransactions(pubKeyHash []byte) []Transaction {
 			if tx.IsCoinbase() == false {
 				for _, in := range tx.Vin {
 					// Was input spent?
-					if in.usesKey(pubKeyHash) {
+					if in.UsesKey(pubKeyHash) {
 						inTxID := hex.EncodeToString(in.Txid)
 						spentTXOs[inTxID] = append(spentTXOs[inTxID], in.Vout)
 					}
@@ -258,7 +258,7 @@ func (bc *Blockchain) SignTransaction(tx *Transaction, privKey ecdsa.PrivateKey)
 		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX
 	}
 
-	tx.sign(privKey, prevTX)
+	tx.Sign(privKey, prevTXs)
 }
 
 // Verfiy transaction input signatures
