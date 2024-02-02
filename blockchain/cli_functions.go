@@ -8,6 +8,9 @@ import (
 
 // Create a blockchain
 func (cli *CLI) createBlockchain(address string) {
+    if !ValidateAddress(address) {
+        log.Panic("ERROR: Address is not valid")
+    }
     bc := CreateBlockchain(address)
     bc.db.Close()
     fmt.Println("Done!")
@@ -32,41 +35,25 @@ func (cli *CLI) getBalance(address string) {
     fmt.Printf("Balance of '%s': %d\n", address, balance)
 }
 
-// Get the length of the blockchain
-func (bc *Blockchain) getChainLength() int {
-    bci := bc.Iterator()
-    blockNum := 0
-    
-    for {
-        block := bci.Next()
-        blockNum++
-        if len(block.PrevHash) == 0 {
-            break
-        }
-    }
-
-    return blockNum
-}
-
 // Print all blocks in the blockchain
 func (cli *CLI) printChain() {
     bc := NewBlockchain("")
     defer bc.db.Close()
 
     bci := bc.Iterator()
-    blockNum := bc.getChainLength()
 
     for {
         block := bci.Next()
 
-        blockNum--
-        fmt.Printf("------ BLOCK %d -------\n", blockNum)
+        fmt.Printf("========== Block - { %x } ==========\n", block.Hash)
 
         fmt.Printf("Previous Hash: %x\n", block.PrevHash)
-        fmt.Printf("Hash: %x\n", block.Hash)
         pow := NewProofOfWork(block)
         fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
         fmt.Println()
+        for _, tx := range block.Transactions {
+            fmt.Println(tx)
+        }
 
         if len(block.PrevHash) == 0 {
             break
@@ -75,6 +62,13 @@ func (cli *CLI) printChain() {
 }
 
 func (cli *CLI) send(from, to string, amount int) {
+    if !ValidateAddress(from) {
+        log.Panic("ERROR: Sender address is invalid")
+    }
+    if !ValidateAddress(to) {
+        log.Panic("ERROR: Recipient address is invalid")
+    }
+
     bc := NewBlockchain(from)
     defer bc.db.Close()
 

@@ -2,7 +2,6 @@ package blockchain
 
 import (
 	"bytes"
-	"crypto/elliptic"
 	"encoding/gob"
 	"fmt"
 	"os"
@@ -49,7 +48,7 @@ func (ws *Wallets) LoadFromFile() error {
     HandleError(err)
 
     var wallets Wallets
-    gob.Register(elliptic.P256())
+    // gob.Register(elliptic.P256())
     decoder := gob.NewDecoder(bytes.NewReader(fileContent))
     err = decoder.Decode(&wallets)
     HandleError(err)
@@ -60,7 +59,7 @@ func (ws *Wallets) LoadFromFile() error {
 
 func (ws Wallets) SaveToFile() {
     var content bytes.Buffer
-    gob.Register(elliptic.P256())
+    // gob.Register(elliptic.P256())
 
     encoder := gob.NewEncoder(&content)
     err := encoder.Encode(ws)

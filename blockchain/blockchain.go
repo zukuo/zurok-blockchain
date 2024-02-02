@@ -64,11 +64,13 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) {
 	err = bc.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(blocksBucket))
 		err := b.Put(newBlock.Hash, newBlock.Serialize())
+		HandleError(err)
 		err = b.Put([]byte("l"), newBlock.Hash)
 		HandleError(err)
 		bc.tip = newBlock.Hash
 		return nil
 	})
+	HandleError(err)
 }
 
 func (bc *Blockchain) FindUnspentTransactions(pubKeyHash []byte) []Transaction {
