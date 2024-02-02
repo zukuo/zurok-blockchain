@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -fr blockchain.db
+rm -fr wallet.dat
+
+echo "Cleaned blockchain.db and wallet.dat!"

@@ -10,13 +10,12 @@ type TXOutput struct {
 
 // Locks signs the output
 func (out *TXOutput) Lock(address []byte) {
-	pubKeyHash := Base58Encode(address)
-	pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
-    out.PubKeyHash = pubKeyHash
+	pubKeyHash := Base58Decode(address)
+    out.PubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
 }
 
 func (out *TXOutput) IsLockedWithKey(pubKeyHash []byte) bool {
-    return bytes.Compare(out.PubKeyHash, pubKeyHash) == 0
+    return bytes.Equal(out.PubKeyHash, pubKeyHash)
 }
 
 func NewTXOutput(value int, address string) *TXOutput {
