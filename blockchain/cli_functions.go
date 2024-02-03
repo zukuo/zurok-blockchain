@@ -69,10 +69,11 @@ func (cli *CLI) send(from, to string, amount int) {
         log.Panic("ERROR: Recipient address is invalid")
     }
 
-    bc := NewBlockchain(from)
+    bc := NewBlockchain()
+    UTXOSet := UTXOSet{bc}
     defer bc.db.Close()
 
-    tx := NewUTXOTransaction(from, to, amount, bc)
+    tx := NewUTXOTransaction(from, to, amount, &UTXOSet)
     bc.MineBlock([]*Transaction{tx})
     fmt.Println("Success!")
 }
