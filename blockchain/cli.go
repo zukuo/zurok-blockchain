@@ -17,6 +17,7 @@ func (cli *CLI) printUsage() {
 	fmt.Println("  listaddresses - Lists all addresses from the wallet file")
 	fmt.Println("  printchain - Print all the blocks of the blockchain")
 	fmt.Println("  send -from FROM -to TO -amount AMOUNT - Send AMOUNT of coins from FROM address to TO")
+	fmt.Println("  reindexutxo - Rebuilds the UTXO set")
 }
 
 func (cli *CLI) validateArgs() {
@@ -37,6 +38,7 @@ func (cli *CLI) Run() {
 	listAddressesCmd := flag.NewFlagSet("listaddresses", flag.ExitOnError)
     sendCmd := flag.NewFlagSet("send", flag.ExitOnError)
     printChainCmd := flag.NewFlagSet("printchain", flag.ExitOnError)
+    reindexUTXOCmd := flag.NewFlagSet("reindexutxo", flag.ExitOnError)
 
     // Set command outputs
     getBalanceAddress := getBalanceCmd.String("address", "", "The address to get balance for")
@@ -63,6 +65,9 @@ func (cli *CLI) Run() {
         HandleError(err)
 	case "printchain":
 		err := printChainCmd.Parse(os.Args[2:])
+        HandleError(err)
+	case "reindexutxo":
+		err := reindexUTXOCmd.Parse(os.Args[2:])
         HandleError(err)
 	default:
 		cli.printUsage()
@@ -103,5 +108,9 @@ func (cli *CLI) Run() {
 
     if printChainCmd.Parsed() {
         cli.printChain()
+    }
+
+    if reindexUTXOCmd.Parsed() {
+        cli.reindexUTXO()
     }
 }
