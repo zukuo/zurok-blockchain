@@ -12,7 +12,11 @@ func (cli *CLI) createBlockchain(address string) {
         log.Panic("ERROR: Address is not valid")
     }
     bc := CreateBlockchain(address)
-    bc.db.Close()
+    defer bc.db.Close()
+
+    UTXOSet := UTXOSet{bc}
+    UTXOSet.Reindex()
+
     fmt.Println("Done!")
 }
 
@@ -20,13 +24,14 @@ func (cli *CLI) getBalance(address string) {
     if !ValidateAddress(address) {
         log.Panic("ERROR: Invalid address")
     }
-    bc := NewBlockchain(address)
+    bc := NewBlockchain()
+    UTXOSet := UTXOSet{bc}
     defer bc.db.Close()
 
     balance := 0
     pubKeyHash := Base58Decode([]byte(address))
     pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
-    UTXOs := bc.FindUTXO(pubKeyHash)
+    UTXOs := UTXOSet.FindUTXO(pubKeyHash)
 
     for _, out := range UTXOs {
         balance += out.Value
@@ -37,7 +42,7 @@ func (cli *CLI) getBalance(address string) {
 
 // Print all blocks in the blockchain
 func (cli *CLI) printChain() {
-    bc := NewBlockchain("")
+    bc := NewBlockchain()
     defer bc.db.Close()
 
     bci := bc.Iterator()
@@ -74,7 +79,11 @@ func (cli *CLI) send(from, to string, amount int) {
     defer bc.db.Close()
 
     tx := NewUTXOTransaction(from, to, amount, &UTXOSet)
-    bc.MineBlock([]*Transaction{tx})
+    cbTx := NewCoinbaseTX(from, "")
+    txs := []*Transaction{cbTx, tx}
+
+    newBlock := bc.MineBlock(txs)
+    UTXOSet.Update(newBlock)
     fmt.Println("Success!")
 }
 
