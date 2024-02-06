@@ -18,7 +18,6 @@ type Wallet struct {
 }
 
 const version = byte(0x00)
-const walletFile = "wallet.dat"
 const addressChecksumLen = 4
 
 func NewWallet() *Wallet {
