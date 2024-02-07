@@ -1,7 +1,7 @@
 package main
 
 import (
-	"zurok/blockchain"
+	"github.com/zukuo/zurok-blockchain/blockchain"
 )
 
 // Test Blockchain

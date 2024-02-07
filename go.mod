@@ -1,4 +1,4 @@
-module zurok
+module github.com/zukuo/zurok-blockchain
 
 go 1.21.4
 
