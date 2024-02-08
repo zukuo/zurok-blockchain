@@ -6,9 +6,10 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/util"
 	"log"
 	"os"
+
+	"github.com/zukuo/zurok-blockchain/util"
 
 	"github.com/boltdb/bolt"
 )

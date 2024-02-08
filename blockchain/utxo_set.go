@@ -2,8 +2,9 @@ package blockchain
 
 import (
 	"encoding/hex"
-	"github.com/zukuo/zurok-blockchain/util"
 	"log"
+
+	"github.com/zukuo/zurok-blockchain/util"
 
 	"github.com/boltdb/bolt"
 )

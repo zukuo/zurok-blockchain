@@ -2,12 +2,13 @@ package cli
 
 import (
 	"fmt"
+	"log"
+	"strconv"
+
 	"github.com/zukuo/zurok-blockchain/blockchain"
 	"github.com/zukuo/zurok-blockchain/network"
 	"github.com/zukuo/zurok-blockchain/util"
 	"github.com/zukuo/zurok-blockchain/wallet"
-	"log"
-	"strconv"
 )
 
 // Create a blockchain

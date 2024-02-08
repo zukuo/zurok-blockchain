@@ -9,11 +9,12 @@ import (
 	"encoding/gob"
 	"encoding/hex"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/util"
-	"github.com/zukuo/zurok-blockchain/wallet"
 	"log"
 	"math/big"
 	"strings"
+
+	"github.com/zukuo/zurok-blockchain/util"
+	"github.com/zukuo/zurok-blockchain/wallet"
 )
 
 // Amount of reward

@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/util"
 	"os"
+
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 const walletFile = "wallet_%s.dat"

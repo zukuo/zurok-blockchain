@@ -3,8 +3,9 @@ package cli
 import (
 	"flag"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/util"
 	"os"
+
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 type CLI struct{}

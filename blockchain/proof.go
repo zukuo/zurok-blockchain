@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/util"
 	"math"
 	"math/big"
+
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 // Proof of Work

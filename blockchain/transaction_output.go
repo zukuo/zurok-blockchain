@@ -3,6 +3,7 @@ package blockchain
 import (
 	"bytes"
 	"encoding/gob"
+
 	"github.com/zukuo/zurok-blockchain/util"
 	"github.com/zukuo/zurok-blockchain/wallet"
 )

@@ -3,8 +3,9 @@ package blockchain
 import (
 	"bytes"
 	"encoding/gob"
-	"github.com/zukuo/zurok-blockchain/util"
 	"time"
+
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 // Blocks Implementation in Blockchain

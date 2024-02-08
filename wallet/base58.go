@@ -2,8 +2,9 @@ package wallet
 
 import (
 	"bytes"
-	"github.com/zukuo/zurok-blockchain/util"
 	"math/big"
+
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 var b58Alphabet = []byte("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")

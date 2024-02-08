@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"bytes"
+
 	"github.com/zukuo/zurok-blockchain/wallet"
 )
 

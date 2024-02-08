@@ -5,10 +5,11 @@ import (
 	"encoding/gob"
 	"encoding/hex"
 	"fmt"
-	"github.com/zukuo/zurok-blockchain/blockchain"
-	"github.com/zukuo/zurok-blockchain/util"
 	"io"
 	"net"
+
+	"github.com/zukuo/zurok-blockchain/blockchain"
+	"github.com/zukuo/zurok-blockchain/util"
 )
 
 const (

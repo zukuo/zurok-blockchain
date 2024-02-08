@@ -7,8 +7,9 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/gob"
-	"github.com/zukuo/zurok-blockchain/util"
 	"math/big"
+
+	"github.com/zukuo/zurok-blockchain/util"
 
 	"golang.org/x/crypto/ripemd160"
 )
