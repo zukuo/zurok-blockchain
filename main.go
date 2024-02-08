@@ -9,6 +9,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
+	"github.com/zukuo/zurok-blockchain/gui"
 )
 
 //go:embed all:gui/frontend/out gui/frontend/out/_next/static/*/* gui/frontend/out/_next/static/*/*/*
@@ -19,7 +20,7 @@ var icon []byte
 
 func main() {
 	// Create an instance of the app structure
-	app := NewApp()
+	app := gui.NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -40,10 +41,10 @@ func main() {
 		Menu:              nil,
 		Logger:            nil,
 		LogLevel:          logger.DEBUG,
-		OnStartup:         app.startup,
-		OnDomReady:        app.domReady,
-		OnBeforeClose:     app.beforeClose,
-		OnShutdown:        app.shutdown,
+		OnStartup:         app.Startup,
+		OnDomReady:        app.DomReady,
+		OnBeforeClose:     app.BeforeClose,
+		OnShutdown:        app.Shutdown,
 		WindowStartState:  options.Normal,
 		Bind: []interface{}{
 			app,

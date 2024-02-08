@@ -4,8 +4,7 @@ body {
   margin: 0;
   height: 100vh;
   width: 100vw;
-  background-color: #0093E9;
-  background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+  background-color: rgba(10, 10, 10, 0.2);
   background-repeat: no-repeat;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
