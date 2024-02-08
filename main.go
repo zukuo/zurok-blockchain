@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/zukuo/zurok-blockchain/cli"
+	"github.com/zukuo/zurok-blockchain/gui"
 )
 
 // Test Blockchain
 func main() {
-	cli := cli.CLI{}
-	cli.Run()
+	//cli := cli.CLI{}
+	//cli.Run()
+	gui.Run()
 }
