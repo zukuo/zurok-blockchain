@@ -1,4 +1,4 @@
-package blockchain
+package wallet
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/gob"
+	"github.com/zukuo/zurok-blockchain/util"
 	"math/big"
 
 	"golang.org/x/crypto/ripemd160"
@@ -30,7 +31,7 @@ func NewWallet() *Wallet {
 func newKeyPair() (ecdsa.PrivateKey, []byte) {
 	curve := elliptic.P256()
 	privateKey, err := ecdsa.GenerateKey(curve, rand.Reader)
-	HandleError(err)
+	util.HandleError(err)
 	publicKey := append(privateKey.PublicKey.X.Bytes(), privateKey.PublicKey.Y.Bytes()...)
 
 	return *privateKey, publicKey
@@ -64,7 +65,7 @@ func HashPubKey(pubKey []byte) []byte {
 	// TODO: RIPEMD is a legacy hash use new like sha256
 	RIPEMD160Hasher := ripemd160.New()
 	_, err := RIPEMD160Hasher.Write(publicSHA256[:])
-	HandleError(err)
+	util.HandleError(err)
 	publicRIPEMD160 := RIPEMD160Hasher.Sum(nil)
 
 	return publicRIPEMD160

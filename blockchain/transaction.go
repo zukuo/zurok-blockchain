@@ -9,6 +9,8 @@ import (
 	"encoding/gob"
 	"encoding/hex"
 	"fmt"
+	"github.com/zukuo/zurok-blockchain/util"
+	"github.com/zukuo/zurok-blockchain/wallet"
 	"log"
 	"math/big"
 	"strings"
@@ -30,7 +32,7 @@ func (tx *Transaction) Serialize() []byte {
 
 	enc := gob.NewEncoder(&encoded)
 	err := enc.Encode(tx)
-	HandleError(err)
+	util.HandleError(err)
 
 	return encoded.Bytes()
 }
@@ -67,7 +69,7 @@ func (tx *Transaction) Sign(privKey ecdsa.PrivateKey, prevTXs map[string]Transac
 		dataToSign := fmt.Sprintf("%x\n", txCopy)
 
 		r, s, err := ecdsa.Sign(rand.Reader, &privKey, []byte(dataToSign))
-		HandleError(err)
+		util.HandleError(err)
 		signature := append(r.Bytes(), s.Bytes()...)
 
 		tx.Vin[inID].Signature = signature
@@ -167,7 +169,7 @@ func NewCoinbaseTX(to, data string) *Transaction {
 	if data == "" {
 		randData := make([]byte, 20)
 		_, err := rand.Read(randData)
-		HandleError(err)
+		util.HandleError(err)
 
 		data = fmt.Sprintf("%x", randData)
 	}
@@ -180,11 +182,11 @@ func NewCoinbaseTX(to, data string) *Transaction {
 	return &tx
 }
 
-func NewUTXOTransaction(wallet *Wallet, to string, amount int, UTXOSet *UTXOSet) *Transaction {
+func NewUTXOTransaction(w *wallet.Wallet, to string, amount int, UTXOSet *UTXOSet) *Transaction {
 	var inputs []TXInput
 	var outputs []TXOutput
 
-	pubKeyHash := HashPubKey(wallet.PublicKey)
+	pubKeyHash := wallet.HashPubKey(w.PublicKey)
 	acc, validOutputs := UTXOSet.FindSpendableOutputs(pubKeyHash, amount)
 
 	// If the account balance is insufficient, exit
@@ -195,16 +197,16 @@ func NewUTXOTransaction(wallet *Wallet, to string, amount int, UTXOSet *UTXOSet)
 	// Create inputs
 	for txid, outs := range validOutputs {
 		txID, err := hex.DecodeString(txid)
-		HandleError(err)
+		util.HandleError(err)
 
 		for _, out := range outs {
-			input := TXInput{txID, out, nil, wallet.PublicKey}
+			input := TXInput{txID, out, nil, w.PublicKey}
 			inputs = append(inputs, input)
 		}
 	}
 
 	// Create outputs
-	from := fmt.Sprintf("%s", wallet.GetAddress())
+	from := fmt.Sprintf("%s", w.GetAddress())
 	outputs = append(outputs, *NewTXOutput(amount, to))
 
 	// If there is change, create a change output
@@ -215,7 +217,7 @@ func NewUTXOTransaction(wallet *Wallet, to string, amount int, UTXOSet *UTXOSet)
 	// Create transaction
 	tx := Transaction{nil, inputs, outputs}
 	tx.ID = tx.Hash()
-	UTXOSet.Blockchain.SignTransaction(&tx, wallet.PrivateKey)
+	UTXOSet.Blockchain.SignTransaction(&tx, w.PrivateKey)
 
 	return &tx
 }
@@ -225,7 +227,7 @@ func DeserializeTransaction(data []byte) Transaction {
 
 	decoder := gob.NewDecoder(bytes.NewReader(data))
 	err := decoder.Decode(&transaction)
-	HandleError(err)
+	util.HandleError(err)
 
 	return transaction
 }

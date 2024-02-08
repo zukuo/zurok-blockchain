@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/zukuo/zurok-blockchain/util"
 	"log"
 	"os"
 
@@ -63,7 +64,7 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 
 		return nil
 	})
-	HandleError(err)
+	util.HandleError(err)
 
 	newBlock := NewBlock(transactions, lastHash, lastHeight+1)
 
@@ -71,13 +72,13 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	err = bc.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(blocksBucket))
 		err := b.Put(newBlock.Hash, newBlock.Serialize())
-		HandleError(err)
+		util.HandleError(err)
 		err = b.Put([]byte("l"), newBlock.Hash)
-		HandleError(err)
+		util.HandleError(err)
 		bc.tip = newBlock.Hash
 		return nil
 	})
-	HandleError(err)
+	util.HandleError(err)
 
 	return newBlock
 }
@@ -172,7 +173,7 @@ func NewBlockchain(nodeID string) *Blockchain {
 	// Open DB
 	var tip []byte
 	db, err := bolt.Open(dbFile, 0600, nil)
-	HandleError(err)
+	util.HandleError(err)
 
 	err = db.Update(func(tx *bolt.Tx) error {
 		// Open read-write transaction
@@ -182,7 +183,7 @@ func NewBlockchain(nodeID string) *Blockchain {
 		return nil
 	})
 
-	HandleError(err)
+	util.HandleError(err)
 	bc := Blockchain{tip, db}
 
 	return &bc
@@ -201,23 +202,23 @@ func CreateBlockchain(address, nodeID string) *Blockchain {
 	genesis := NewGenesisBlock(cbtx)
 
 	db, err := bolt.Open(dbFile, 0600, nil)
-	HandleError(err)
+	util.HandleError(err)
 
 	err = db.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucket([]byte(blocksBucket))
-		HandleError(err)
+		util.HandleError(err)
 
 		err = b.Put(genesis.Hash, genesis.Serialize())
-		HandleError(err)
+		util.HandleError(err)
 
 		err = b.Put([]byte("l"), genesis.Hash)
-		HandleError(err)
+		util.HandleError(err)
 		tip = genesis.Hash
 
 		return nil
 	})
 
-	HandleError(err)
+	util.HandleError(err)
 	bc := Blockchain{tip, db}
 
 	return &bc
@@ -233,7 +234,7 @@ func (bc *Blockchain) AddBlock(block *Block) {
 
 		blockData := block.Serialize()
 		err := b.Put(block.Hash, blockData)
-		HandleError(err)
+		util.HandleError(err)
 
 		lastHash := b.Get([]byte("l"))
 		lastBlockData := b.Get(lastHash)
@@ -241,13 +242,13 @@ func (bc *Blockchain) AddBlock(block *Block) {
 
 		if block.Height > lastBlock.Height {
 			err = b.Put([]byte("l"), block.Hash)
-			HandleError(err)
+			util.HandleError(err)
 			bc.tip = block.Hash
 		}
 
 		return nil
 	})
-	HandleError(err)
+	util.HandleError(err)
 }
 
 // Sign inputs of a Transaction
@@ -256,7 +257,7 @@ func (bc *Blockchain) SignTransaction(tx *Transaction, privKey ecdsa.PrivateKey)
 
 	for _, vin := range tx.Vin {
 		prevTX, err := bc.FindTransaction(vin.Txid)
-		HandleError(err)
+		util.HandleError(err)
 		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX
 	}
 
@@ -273,7 +274,7 @@ func (bc *Blockchain) VerifyTransaction(tx *Transaction) bool {
 
 	for _, vin := range tx.Vin {
 		prevTX, err := bc.FindTransaction(vin.Txid)
-		HandleError(err)
+		util.HandleError(err)
 		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX
 	}
 
@@ -291,7 +292,7 @@ func (bc *Blockchain) GetBestHeight() int {
 
 		return nil
 	})
-	HandleError(err)
+	util.HandleError(err)
 
 	return lastBlock.Height
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"github.com/zukuo/zurok-blockchain/util"
 	"math"
 	"math/big"
 )
@@ -28,9 +29,9 @@ func (pow *ProofOfWork) prepareData(nonce int) []byte {
 		[][]byte{
 			pow.block.PrevHash,
 			pow.block.HashTransactions(),
-			IntToHex(pow.block.Timestamp),
-			IntToHex(int64(targetBits)),
-			IntToHex(int64(nonce)),
+			util.IntToHex(pow.block.Timestamp),
+			util.IntToHex(int64(targetBits)),
+			util.IntToHex(int64(nonce)),
 		},
 		[]byte{},
 	)
@@ -70,4 +71,3 @@ func (pow *ProofOfWork) Validate() bool {
 	isValid := hashInt.Cmp(pow.target) == -1
 	return isValid
 }
-

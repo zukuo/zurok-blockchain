@@ -3,6 +3,7 @@ package blockchain
 import (
 	"bytes"
 	"encoding/gob"
+	"github.com/zukuo/zurok-blockchain/util"
 	"time"
 )
 
@@ -13,7 +14,7 @@ type Block struct {
 	Hash         []byte
 	PrevHash     []byte
 	Nonce        int
-	Height		 int
+	Height       int
 }
 
 func (b *Block) HashTransactions() []byte {
@@ -32,7 +33,7 @@ func (b *Block) Serialize() []byte {
 
 	encoder := gob.NewEncoder(&result)
 	err := encoder.Encode(b)
-	HandleError(err)
+	util.HandleError(err)
 
 	return result.Bytes()
 }
@@ -42,7 +43,7 @@ func DeserializeBlock(d []byte) *Block {
 
 	decoder := gob.NewDecoder(bytes.NewReader(d))
 	err := decoder.Decode(&block)
-	HandleError(err)
+	util.HandleError(err)
 
 	return &block
 }

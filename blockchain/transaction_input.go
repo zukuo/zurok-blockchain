@@ -1,6 +1,9 @@
 package blockchain
 
-import "bytes"
+import (
+	"bytes"
+	"github.com/zukuo/zurok-blockchain/wallet"
+)
 
 // Transaction input
 type TXInput struct {
@@ -11,6 +14,6 @@ type TXInput struct {
 }
 
 func (in *TXInput) UsesKey(pubKeyHash []byte) bool {
-    lockingHash := HashPubKey(in.PubKey)
-    return bytes.Equal(lockingHash, pubKeyHash)
+	lockingHash := wallet.HashPubKey(in.PubKey)
+	return bytes.Equal(lockingHash, pubKeyHash)
 }

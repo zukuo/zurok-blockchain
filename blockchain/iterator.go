@@ -1,6 +1,9 @@
 package blockchain
 
-import "github.com/boltdb/bolt"
+import (
+	"github.com/boltdb/bolt"
+	"github.com/zukuo/zurok-blockchain/util"
+)
 
 // Iterator Type
 type BlockchainIterator struct {
@@ -23,9 +26,8 @@ func (i *BlockchainIterator) Next() *Block {
 		block = DeserializeBlock(encodedBlock)
 		return nil
 	})
-	HandleError(err)
+	util.HandleError(err)
 
 	i.currentHash = block.PrevHash
 	return block
 }
-
