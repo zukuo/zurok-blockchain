@@ -24,3 +24,7 @@ go.work
 *.db
 *.dat
 *.idea
+
+gui/build/bin
+gui/frontend/dist
+gui/frontend/node_modules
