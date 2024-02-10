@@ -29,6 +29,16 @@ func (a *App) GetAddressesWithBalances(nodeID string) []balances {
 	return addrBal
 }
 
+// GetAddresses is used for getting all addresses
+func (a *App) GetAddresses(nodeID string) []string {
+	wallets, err := wallet.NewWallets(nodeID)
+	util.HandleError(err)
+	addresses := wallets.GetAddresses()
+	sort.Strings(addresses)
+
+	return addresses
+}
+
 // listAddresses returns a list of strings of all wallet addresses in the database at a given node
 func listAddresses(nodeID string) []string {
 	wallets, err := wallet.NewWallets(nodeID)

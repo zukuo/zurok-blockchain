@@ -5,6 +5,8 @@ import {gui} from '../models';
 
 export function DomReady(arg1:context.Context):Promise<void>;
 
+export function GetAddresses(arg1:string):Promise<Array<string>>;
+
 export function GetAddressesWithBalances(arg1:string):Promise<Array<gui.balances>>;
 
 export function Greet(arg1:string):Promise<string>;

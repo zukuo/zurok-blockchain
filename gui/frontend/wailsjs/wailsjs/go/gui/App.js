@@ -6,6 +6,10 @@ export function DomReady(arg1) {
   return window['go']['gui']['App']['DomReady'](arg1);
 }
 
+export function GetAddresses(arg1) {
+  return window['go']['gui']['App']['GetAddresses'](arg1);
+}
+
 export function GetAddressesWithBalances(arg1) {
   return window['go']['gui']['App']['GetAddressesWithBalances'](arg1);
 }
