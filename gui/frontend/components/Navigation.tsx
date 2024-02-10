@@ -5,6 +5,7 @@ import { GrSend } from "react-icons/gr";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { TbPick } from "react-icons/tb";
 import Wallet from "./Wallet";
+import Send from "./Send";
 
 export default function Navigation() {
     const [selected, setSelected] = useState<string | number>("wallet")
@@ -46,7 +47,7 @@ export default function Navigation() {
         {
             id: "send",
             label: sendLabel(),
-            content: "Hello",
+            content: Send,
         },
         {
             id: "transactions",
@@ -61,7 +62,7 @@ export default function Navigation() {
     ];
 
     return (
-        <div className="flex w-full flex-col px-10 py-5 ">
+        <div className="flex w-full flex-col px-10 py-5">
             <Tabs aria-label="Dynamic tabs"
                   className="justify-center"
                   items={tabs}

@@ -3,17 +3,38 @@ package gui
 import (
 	"log"
 	"os"
+	"sort"
 
 	"github.com/zukuo/zurok-blockchain/blockchain"
 	"github.com/zukuo/zurok-blockchain/util"
 	"github.com/zukuo/zurok-blockchain/wallet"
 )
 
-// ListAddresses returns a list of strings of all wallet addresses in the database at a given node
-func (a *App) ListAddresses(nodeID string) []string {
+type balances struct {
+	Key     int    `json:"key"`
+	Address string `json:"address"`
+	Balance int    `json:"balance"`
+}
+
+func (a *App) GetAddressesWithBalances(nodeID string) []balances {
+	addresses := listAddresses(nodeID)
+	addrBal := make([]balances, len(addresses))
+
+	for i, addr := range addresses {
+		addrBal[i].Key = i + 1
+		addrBal[i].Address = addr
+		addrBal[i].Balance = getBalance(addr, nodeID)
+	}
+
+	return addrBal
+}
+
+// listAddresses returns a list of strings of all wallet addresses in the database at a given node
+func listAddresses(nodeID string) []string {
 	wallets, err := wallet.NewWallets(nodeID)
 	util.HandleError(err)
 	addresses := wallets.GetAddresses()
+	sort.Strings(addresses)
 
 	return addresses
 }
