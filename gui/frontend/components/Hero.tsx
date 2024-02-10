@@ -1,4 +1,5 @@
 import React from 'react';
+// import { SiZcash } from "react-icons/si"
 
 const Hero = () => {
   return (
