@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Input} from "@nextui-org/input";
-import {MdSwapVert} from "react-icons/md";
+import { IoMdArrowRoundDown } from "react-icons/io";
 import {Button} from "@nextui-org/button";
 import { IoSend } from "react-icons/io5";
 import {GetAddresses} from "../wailsjs/wailsjs/go/gui/App";
@@ -38,9 +38,9 @@ const Send = () => {
       {/* Sender */}
       <div className="flex justify-center font-mono">
         <Autocomplete
+          variant={"bordered"}
           defaultItems={items}
-          label="Sender Wallet"
-          placeholder="Search an address"
+          label="Sender Address"
           className="w-1/3"
         >
           {(item) => <AutocompleteItem key={item.key}>{item.address}</AutocompleteItem>}
@@ -49,19 +49,42 @@ const Send = () => {
 
       {/* Arrows */}
       <div className="py-4 flex justify-center">
-        <MdSwapVert className="text-3xl text-success drop-shadow-2xl"/>
+        <IoMdArrowRoundDown className="text-3xl text-success drop-shadow-2xl"/>
       </div>
 
       {/* Recipient */}
       <div className="flex justify-center font-mono">
         <Autocomplete
+          variant={"bordered"}
           defaultItems={items}
-          label="Recipient Wallet"
-          placeholder="Search an address"
+          label="Recipient Address"
           className="w-1/3"
         >
           {(item) => <AutocompleteItem key={item.key}>{item.address}</AutocompleteItem>}
         </Autocomplete>
+      </div>
+
+      {/* Amount */}
+      <div className="flex justify-center font-mono pt-5">
+        <Input
+          label="Price"
+          placeholder="0.00"
+          variant={"bordered"}
+          className="w-1/6"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+          endContent={
+            <div className="flex items-center">
+              <label className="sr-only" htmlFor="currency">
+                Currency
+              </label>
+            </div>
+          }
+          type="number"
+        />
       </div>
 
       {/* Button */}

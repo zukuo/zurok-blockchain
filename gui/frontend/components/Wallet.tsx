@@ -55,7 +55,7 @@ const Wallet = () => {
       {/* Table */}
       <div className="flex justify-center">
         <Table aria-label="Wallet Addresses with Balances"
-               className="max-h-[489px] min-w-[477px] max-w-[477px] text-gray-300 font-mono"
+               className="max-h-[489px] min-w-[477px] max-w-[477px] font-mono"
                color={"success"}
                bottomContent={pages > 1 ?
                  <div className="flex w-full justify-center">
