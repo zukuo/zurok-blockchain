@@ -52,9 +52,10 @@ const Wallet = () => {
 
   return (
     <>
+      {/* Table */}
       <div className="flex justify-center">
         <Table aria-label="Wallet Addresses with Balances"
-               className="w-2/5 text-gray-300 font-mono"
+               className="max-h-[489px] min-w-[477px] max-w-[477px] text-gray-300 font-mono"
                color={"success"}
                bottomContent={pages > 1 ?
                  <div className="flex w-full justify-center">
@@ -70,10 +71,7 @@ const Wallet = () => {
                      onChange={(page) => setPage(page)}
                    />
                  </div> : null
-               }
-               classNames={{
-                 wrapper: "max-h-[490px]",
-               }}>
+               }>
           <TableHeader>
             <TableColumn key="address">Address</TableColumn>
             <TableColumn key="balance" align={"center"} width={150} className="text-center">Balance</TableColumn>
@@ -88,6 +86,8 @@ const Wallet = () => {
           {/*<TableBody emptyContent={"No wallets found."}>{[]}</TableBody>*/}
         </Table>
       </div>
+
+      {/* Button */}
       <div className="flex justify-center p-7">
         <Button endContent={<FaPlus/>} radius="lg" color={"success"} className="text-black shadow-lg">
           New Wallet
