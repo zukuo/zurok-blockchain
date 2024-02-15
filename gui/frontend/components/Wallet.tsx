@@ -10,7 +10,7 @@ import {
   Spinner,
   Pagination
 } from "@nextui-org/react";
-import {GetAddressesWithBalances} from "../wailsjs/wailsjs/go/gui/App"
+import {CreateWallet, GetAddressesWithBalances} from "../wailsjs/wailsjs/go/gui/App"
 import {Button} from "@nextui-org/button"
 import { FaPlus } from "react-icons/fa";
 
@@ -35,7 +35,26 @@ const Wallet = () => {
       }
     }
     fetchWallets()
-  }, [])
+  }, [wallets])
+
+  // Create New Wallet
+  const [newWallet, setNewWallet] = useState("")
+  const createWallet = () => {
+    try {
+      CreateWallet(node)
+        .then(result => {
+          setNewWallet(result)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } catch (e) {
+      console.error(e)
+    }
+    setWallets([...wallets, {key: wallets.length-1, address: newWallet, balance: 0}])
+  }
+
+  // const confirmModal = <Confirm title="Confirm Wallet Creation" content="Are you sure you want to create a new wallet?"/>
 
   // Check if it is loading data
   const loadingState =  wallets?.length === 0 ? "loading" : "idle"
@@ -89,7 +108,7 @@ const Wallet = () => {
 
       {/* Button */}
       <div className="flex justify-center p-7">
-        <Button endContent={<FaPlus/>} radius="lg" color={"success"} className="text-black shadow-lg">
+        <Button onClick={createWallet} endContent={<FaPlus/>} radius="lg" color={"success"} className="text-black shadow-lg">
           New Wallet
         </Button>
       </div>

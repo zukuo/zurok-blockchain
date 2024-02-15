@@ -3,6 +3,8 @@
 import {context} from '../models';
 import {gui} from '../models';
 
+export function CreateWallet(arg1:string):Promise<string>;
+
 export function DomReady(arg1:context.Context):Promise<void>;
 
 export function GetAddresses(arg1:string):Promise<Array<string>>;
@@ -10,3 +12,5 @@ export function GetAddresses(arg1:string):Promise<Array<string>>;
 export function GetAddressesWithBalances(arg1:string):Promise<Array<gui.balances>>;
 
 export function Greet(arg1:string):Promise<string>;
+
+export function SendTransaction(arg1:string,arg2:string,arg3:number,arg4:string,arg5:boolean):Promise<void>;

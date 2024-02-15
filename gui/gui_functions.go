@@ -1,11 +1,13 @@
 package gui
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"sort"
 
 	"github.com/zukuo/zurok-blockchain/blockchain"
+	"github.com/zukuo/zurok-blockchain/network"
 	"github.com/zukuo/zurok-blockchain/util"
 	"github.com/zukuo/zurok-blockchain/wallet"
 )
@@ -70,14 +72,64 @@ func getBalance(address, nodeID string) int {
 	return balance
 }
 
-// createWallet returns the wallet address of a newly generated wallet
-func createWallet(nodeID string) string {
+// CreateWallet returns the wallet address of a newly generated wallet
+func (a *App) CreateWallet(nodeID string) string {
 	wallets, _ := wallet.NewWallets(nodeID)
 	address := wallets.CreateWallet()
 	wallets.SaveToFile(nodeID)
 
 	return address
 }
+
+// Send Transactions - NEEDS UPDATING
+func (a *App) SendTransaction(from, to string, amount int, nodeID string, mineNow bool) {
+	if !wallet.ValidateAddress(from) {
+		log.Panic("ERROR: Sender address is invalid")
+	}
+	if !wallet.ValidateAddress(to) {
+		log.Panic("ERROR: Recipient address is invalid")
+	}
+
+	bc := blockchain.NewBlockchain(nodeID)
+	UTXOSet := blockchain.UTXOSet{bc}
+	defer bc.GetDB().Close()
+
+	wallets, err := wallet.NewWallets(nodeID)
+	util.HandleError(err)
+	wallet := wallets.GetWallet(from)
+	tx := blockchain.NewUTXOTransaction(&wallet, to, amount, &UTXOSet)
+
+	if mineNow {
+		cbTx := blockchain.NewCoinbaseTX(from, "")
+		txs := []*blockchain.Transaction{cbTx, tx}
+		newBlock := bc.MineBlock(txs)
+		UTXOSet.Update(newBlock)
+	} else {
+		network.SendTx(network.KnownNodes[0], tx)
+	}
+
+	fmt.Println("Success!")
+}
+
+func startNode(nodeID, minerAddress string) {
+	fmt.Printf("Starting node %s\n", nodeID)
+
+	if len(minerAddress) > 0 {
+		if wallet.ValidateAddress(minerAddress) {
+			fmt.Println("Mining is on. Address to receive rewards: ", minerAddress)
+		} else {
+			log.Panic("Wrong miner address!")
+		}
+	}
+
+	network.StartServer(nodeID, minerAddress)
+}
+
+//func (a *App) GiveMoney(walletID string, amount int, nodeID string) {
+//	bc := blockchain.NewBlockchain(nodeID)
+//	UTXOSet := blockchain.UTXOSet{bc}
+//	defer bc.GetDB().Close()
+//}
 
 // getHostname returns the hostname of the node
 func getHostname() string {
