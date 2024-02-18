@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import { IoMdArrowRoundDown } from "react-icons/io";
 import {Button} from "@nextui-org/button";
 import { IoSend } from "react-icons/io5";
 import {GetAddresses, SendTransaction} from "../wailsjs/wailsjs/go/gui/App";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import {NodeContext} from "../pages";
 
 const Send = () => {
-  const node = "3000"
+  const node = useContext(NodeContext)!.node
   const [from, setFrom] = useState("")
   const [to, setTo] = useState("")
   const [amount, setAmount] = useState(0)

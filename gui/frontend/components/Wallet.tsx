@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import {
   Table,
   TableHeader,
@@ -13,9 +13,10 @@ import {
 import {CreateWallet, GetAddressesWithBalances} from "../wailsjs/wailsjs/go/gui/App"
 import {Button} from "@nextui-org/button"
 import { FaPlus } from "react-icons/fa";
+import {NodeContext} from "../pages";
 
 const Wallet = () => {
-  const node = "3000"
+  const node = useContext(NodeContext)!.node
   let addressBalances: { key: number; address: string; balance: number; }[]  = []
 
   // Get JSON of key, address, balance

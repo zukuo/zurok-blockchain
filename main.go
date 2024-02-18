@@ -19,6 +19,8 @@ var assets embed.FS
 var icon []byte
 
 func main() {
+	//cli := cli.CLI{}
+	//cli.Run()
 	// Create an instance of the app structure
 	app := gui.NewApp()
 
