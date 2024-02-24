@@ -3,6 +3,7 @@ import Navigation from "../components/Navigation";
 import Hero from "../components/Hero";
 import React, {createContext, useState} from "react";
 import Login from "../components/Login";
+import Refresh from "../components/Refresh";
 
 type NodeContextType = {
   node: string;
@@ -28,7 +29,10 @@ const Home: NextPage = () => {
         {!isLoggedIn ? <LoginContext.Provider value={{isLoggedIn: isLoggedIn, setIsLoggedIn: setIsLoggedIn}}>
           <Login />
         </LoginContext.Provider> : null}
-        {isLoggedIn ? <Navigation/> : null}
+        {isLoggedIn ? <>
+          <Navigation />
+          <Refresh />
+        </> : null}
       </NodeContext.Provider>
     </>
   )

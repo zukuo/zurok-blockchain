@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"time"
 
 	"github.com/zukuo/zurok-blockchain/blockchain"
 	"github.com/zukuo/zurok-blockchain/util"
@@ -290,7 +291,7 @@ func handleTx(request []byte, bc *blockchain.Blockchain) {
 			}
 		}
 	} else {
-		if len(mempool) >= 2 && len(miningAddress) > 0 {
+		if len(mempool) >= 1 && len(miningAddress) > 0 {
 		MineTransactions:
 			var txs []*blockchain.Transaction
 
@@ -402,6 +403,34 @@ func StartServer(nodeID, minerAddress string) {
 		conn, err := ln.Accept()
 		util.HandleError(err)
 		go handleConnection(conn, bc)
+	}
+}
+
+func StartServerWithTime(nodeID, minerAddress string, timeDeadline int) {
+	nodeAddress = fmt.Sprintf("localhost:%s", nodeID)
+	miningAddress = minerAddress
+	ln, err := net.Listen(protocol, nodeAddress)
+	util.HandleError(err)
+	defer ln.Close()
+
+	bc := blockchain.NewBlockchain(nodeID)
+
+	if nodeAddress != KnownNodes[0] {
+		sendVersion(KnownNodes[0], bc)
+	}
+
+	timeout := time.After(time.Duration(timeDeadline) * time.Second)
+
+	for {
+		select {
+		case <-timeout:
+			fmt.Println("Server has reached the specified time limit. Closing the server.")
+			return
+		default:
+			conn, err := ln.Accept()
+			util.HandleError(err)
+			go handleConnection(conn, bc)
+		}
 	}
 }
 

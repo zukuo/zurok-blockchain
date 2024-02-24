@@ -7,6 +7,9 @@ import {FiLogIn} from "react-icons/fi";
 const Login = () => {
   const nodeContext = useContext(NodeContext)
   const loginContext = useContext(LoginContext)
+  const onLogin = () => {
+    loginContext?.setIsLoggedIn(true)
+  }
 
   return (
     <>
@@ -26,7 +29,7 @@ const Login = () => {
         <Button endContent={<FiLogIn/>}
                 radius="lg"
                 color={"success"}
-                onClick={() => loginContext?.setIsLoggedIn(true)}>
+                onClick={onLogin}>
           Enter
         </Button>
       </div>

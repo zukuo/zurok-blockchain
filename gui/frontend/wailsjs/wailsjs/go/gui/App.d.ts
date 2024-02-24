@@ -11,6 +11,10 @@ export function GetAddresses(arg1:string):Promise<Array<string>>;
 
 export function GetAddressesWithBalances(arg1:string):Promise<Array<gui.balances>>;
 
+export function GetBlockInfos(arg1:string):Promise<Array<gui.blocks>>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function SendTransaction(arg1:string,arg2:string,arg3:number,arg4:string,arg5:boolean):Promise<void>;
+
+export function StartNode(arg1:string,arg2:string):Promise<void>;

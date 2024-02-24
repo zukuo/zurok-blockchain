@@ -18,10 +18,18 @@ export function GetAddressesWithBalances(arg1) {
   return window['go']['gui']['App']['GetAddressesWithBalances'](arg1);
 }
 
+export function GetBlockInfos(arg1) {
+  return window['go']['gui']['App']['GetBlockInfos'](arg1);
+}
+
 export function Greet(arg1) {
   return window['go']['gui']['App']['Greet'](arg1);
 }
 
 export function SendTransaction(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['gui']['App']['SendTransaction'](arg1, arg2, arg3, arg4, arg5);
+}
+
+export function StartNode(arg1, arg2) {
+  return window['go']['gui']['App']['StartNode'](arg1, arg2);
 }

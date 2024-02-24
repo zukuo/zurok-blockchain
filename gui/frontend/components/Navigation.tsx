@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { MdWallet } from "react-icons/md";
-import { GrSend } from "react-icons/gr";
+import {GrCubes, GrSend} from "react-icons/gr";
 import { AiOutlineTransaction } from "react-icons/ai";
-import { TbPick } from "react-icons/tb";
+import {TbPick} from "react-icons/tb";
 import Wallet from "./Wallet";
 import Send from "./Send";
+import Blocks from "./Blocks";
 
 export default function Navigation() {
     const [selected, setSelected] = useState<string | number>("wallet")
@@ -21,6 +22,13 @@ export default function Navigation() {
         return <div className="flex items-center space-x-2">
             <GrSend className=""/>
             <span>Send</span>
+        </div>
+    }
+
+    const blocksLabel = () => {
+        return <div className="flex items-center space-x-2">
+            <GrCubes className="text-md"/>
+            <span>Blocks</span>
         </div>
     }
 
@@ -48,6 +56,11 @@ export default function Navigation() {
             id: "send",
             label: sendLabel(),
             content: Send,
+        },
+        {
+            id: "blocks",
+            label: blocksLabel(),
+            content: Blocks,
         },
         {
             id: "transactions",

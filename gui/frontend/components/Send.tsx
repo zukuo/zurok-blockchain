@@ -64,6 +64,7 @@ const Send = () => {
           defaultItems={items}
           label="Sender Address"
           className="w-1/3"
+          allowsCustomValue={true}
           onSelectionChange={(key) => {setSelectedKey(key)}}
           onInputChange={(value) => {setFrom(value)}}
         >
@@ -83,6 +84,7 @@ const Send = () => {
           defaultItems={items}
           label="Recipient Address"
           className="w-1/3"
+          allowsCustomValue={true}
           onSelectionChange={(key) => {setSelectedKey(key)}}
           onInputChange={(value) => {setTo(value)}}
         >

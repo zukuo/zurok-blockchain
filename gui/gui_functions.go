@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"time"
 
 	"github.com/zukuo/zurok-blockchain/blockchain"
 	"github.com/zukuo/zurok-blockchain/network"
@@ -111,7 +112,7 @@ func (a *App) SendTransaction(from, to string, amount int, nodeID string, mineNo
 	fmt.Println("Success!")
 }
 
-func startNode(nodeID, minerAddress string) {
+func (a *App) StartNode(nodeID, minerAddress string) {
 	fmt.Printf("Starting node %s\n", nodeID)
 
 	if len(minerAddress) > 0 {
@@ -122,13 +123,86 @@ func startNode(nodeID, minerAddress string) {
 		}
 	}
 
-	network.StartServer(nodeID, minerAddress)
+	network.StartServerWithTime(nodeID, minerAddress, 3)
 }
 
-//func (a *App) GiveMoney(walletID string, amount int, nodeID string) {
+//type transactions struct {
+//	Key         int    `json:"key"`
+//	Transaction string `json:"transaction"`
+//	Amount      int    `json:"balance"`
+//}
+//
+//func (a *App) GetTransactionNames(nodeID string) []transactions {
 //	bc := blockchain.NewBlockchain(nodeID)
-//	UTXOSet := blockchain.UTXOSet{bc}
 //	defer bc.GetDB().Close()
+//	bci := bc.Iterator()
+//
+//	for {
+//		block := bci.Next()
+//	}
+//}
+
+type blocks struct {
+	Key       int    `json:"key"`
+	Hash      string `json:"hash"`
+	PrevHash  string `json:"prevhash"`
+	Height    int    `json:"height"`
+	Timestamp string `json:"timestamp"`
+	Nonce     int    `json:"nonce"`
+	Pow       bool   `json:"pow"`
+}
+
+func (a *App) GetBlockInfos(nodeID string) []blocks {
+	bc := blockchain.NewBlockchain(nodeID)
+	defer bc.GetDB().Close()
+	bci := bc.Iterator()
+	var blocksArr []blocks
+
+	i := 0
+	for {
+		block := bci.Next()
+		pow := blockchain.NewProofOfWork(block)
+
+		data := blocks{
+			Key:       i + 1,
+			Hash:      fmt.Sprintf("%x", block.Hash),
+			PrevHash:  fmt.Sprintf("%x", block.PrevHash),
+			Height:    block.Height,
+			Timestamp: fmt.Sprintf("%s", time.Unix(block.Timestamp, 0)),
+			Nonce:     block.Nonce,
+			Pow:       pow.Validate(),
+		}
+
+		blocksArr = append(blocksArr, data)
+		i++
+
+		if len(block.PrevHash) == 0 {
+			break
+		}
+	}
+
+	return blocksArr
+}
+
+//func (a *App) GetAddressesWithBalances(nodeID string) []balances {
+//	addresses := listAddresses(nodeID)
+//	addrBal := make([]balances, len(addresses))
+//
+//	for i, addr := range addresses {
+//		addrBal[i].Key = i + 1
+//		addrBal[i].Address = addr
+//		addrBal[i].Balance = getBalance(addr, nodeID)
+//	}
+//
+//	return addrBal
+//}
+
+//func (a *App) RefreshNode(nodeID string) {
+//	network.StartServer(nodeID, "")
+//}
+
+//func (a *App) StopNode(nodeID, minerAddress string) {
+//
 //}
 
 // getHostname returns the hostname of the node
