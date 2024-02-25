@@ -13,8 +13,14 @@ type LoginContextType = {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type NavContextType = {
+  selectedTab: string | number;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string | number>>
+}
+
 export const NodeContext = createContext<null | NodeContextType>(null);
 export const LoginContext = createContext<null | LoginContextType>(null);
+export const NavContext = createContext<null | NavContextType>(null);
 
 const Home: NextPage = () => {
 

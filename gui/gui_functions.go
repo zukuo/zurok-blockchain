@@ -158,13 +158,12 @@ func (a *App) GetBlockInfos(nodeID string) []blocks {
 	bci := bc.Iterator()
 	var blocksArr []blocks
 
-	i := 0
 	for {
 		block := bci.Next()
 		pow := blockchain.NewProofOfWork(block)
 
 		data := blocks{
-			Key:       i + 1,
+			Key:       block.Height + 1,
 			Hash:      fmt.Sprintf("%x", block.Hash),
 			PrevHash:  fmt.Sprintf("%x", block.PrevHash),
 			Height:    block.Height,
@@ -174,12 +173,15 @@ func (a *App) GetBlockInfos(nodeID string) []blocks {
 		}
 
 		blocksArr = append(blocksArr, data)
-		i++
 
 		if len(block.PrevHash) == 0 {
 			break
 		}
 	}
+
+	sort.Slice(blocksArr, func(i, j int) bool {
+		return blocksArr[i].Key < blocksArr[j].Key
+	})
 
 	return blocksArr
 }

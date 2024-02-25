@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { MdWallet } from "react-icons/md";
 import {GrCubes, GrSend} from "react-icons/gr";
@@ -7,9 +7,11 @@ import {TbPick} from "react-icons/tb";
 import Wallet from "./Wallet";
 import Send from "./Send";
 import Blocks from "./Blocks";
+import {NavContext} from "../pages";
 
 export default function Navigation() {
-    const [selected, setSelected] = useState<string | number>("wallet")
+    // const [selected, setSelected] = useState<string | number>("wallet")
+    const navContext = useContext(NavContext)
 
     const walletLabel = () => {
         return <div className="flex items-center space-x-2">
@@ -80,8 +82,8 @@ export default function Navigation() {
                   className="justify-center"
                   items={tabs}
                   variant={"light"}
-                  selectedKey={selected}
-                  onSelectionChange={(string) => setSelected(string)}
+                  selectedKey={navContext?.selectedTab}
+                  onSelectionChange={(string) => navContext?.setSelectedTab(string)}
                   size={"lg"}
                   color={"success"}>
                 {(item) => (
