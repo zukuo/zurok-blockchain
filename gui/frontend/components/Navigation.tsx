@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { MdWallet } from "react-icons/md";
 import {GrCubes, GrSend} from "react-icons/gr";
@@ -10,7 +10,6 @@ import Blocks from "./Blocks";
 import {NavContext} from "../pages";
 
 export default function Navigation() {
-    // const [selected, setSelected] = useState<string | number>("wallet")
     const navContext = useContext(NavContext)
 
     const walletLabel = () => {

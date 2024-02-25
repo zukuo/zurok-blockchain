@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {useRouter} from "next/router";
 import {Button} from "@nextui-org/button";
 import {Card, CardBody} from "@nextui-org/card";
