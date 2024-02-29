@@ -126,22 +126,6 @@ func (a *App) StartNode(nodeID, minerAddress string) {
 	network.StartServerWithTime(nodeID, minerAddress, 3)
 }
 
-//type transactions struct {
-//	Key         int    `json:"key"`
-//	Transaction string `json:"transaction"`
-//	Amount      int    `json:"balance"`
-//}
-//
-//func (a *App) GetTransactionNames(nodeID string) []transactions {
-//	bc := blockchain.NewBlockchain(nodeID)
-//	defer bc.GetDB().Close()
-//	bci := bc.Iterator()
-//
-//	for {
-//		block := bci.Next()
-//	}
-//}
-
 type blocks struct {
 	Key       int    `json:"key"`
 	Hash      string `json:"hash"`
@@ -180,23 +164,144 @@ func (a *App) GetBlockInfos(nodeID string) []blocks {
 	}
 
 	sort.Slice(blocksArr, func(i, j int) bool {
-		return blocksArr[i].Key < blocksArr[j].Key
+		return blocksArr[i].Key > blocksArr[j].Key
 	})
 
 	return blocksArr
 }
 
-//func (a *App) GetAddressesWithBalances(nodeID string) []balances {
-//	addresses := listAddresses(nodeID)
-//	addrBal := make([]balances, len(addresses))
+type transactions struct {
+	Key         int      `json:"key"`
+	Transaction string   `json:"transaction"`
+	Amount      int      `json:"amount"`
+	Block       string   `json:"block"`
+	Height      int      `json:"height"`
+	Inputs      []*txin  `json:"inputs"`
+	Outputs     []*txout `json:"outputs"`
+}
+
+type txin struct {
+	Txid      string `json:"txid"`
+	Vout      int    `json:"vout"`
+	Signature string `json:"signature"`
+	PubKey    string `json:"pubkey"`
+}
+
+type txout struct {
+	Value      int    `json:"value"`
+	PubKeyHash string `json:"pubkeyhash"`
+}
+
+func (a *App) GetTransactions(nodeID string) []transactions {
+	bc := blockchain.NewBlockchain(nodeID)
+	defer bc.GetDB().Close()
+	bci := bc.Iterator()
+	var txs []transactions
+
+	i := 1
+	for {
+		block := bci.Next()
+
+		for _, tx := range block.Transactions {
+			data := transactions{
+				Key:         i,
+				Transaction: fmt.Sprintf("%x", tx.ID),
+				Amount:      tx.Vout[0].Value,
+				Block:       fmt.Sprintf("%x", block.Hash),
+				Height:      block.Height,
+				Inputs:      make([]*txin, 0),
+				Outputs:     make([]*txout, 0),
+			}
+
+			for _, input := range tx.Vin {
+				in := txin{
+					Txid:      util.BytesToString(input.Txid),
+					Vout:      input.Vout,
+					Signature: util.BytesToString(input.Signature),
+					PubKey:    util.BytesToString(input.PubKey),
+				}
+				data.Inputs = append(data.Inputs, &in)
+			}
+
+			for _, output := range tx.Vout {
+				out := txout{
+					Value:      output.Value,
+					PubKeyHash: util.BytesToString(output.PubKeyHash),
+				}
+				data.Outputs = append(data.Outputs, &out)
+			}
+
+			txs = append(txs, data)
+			i++
+		}
+
+		if len(block.PrevHash) == 0 {
+			break
+		}
+	}
+
+	sort.Slice(txs, func(i, j int) bool {
+		return txs[i].Key < txs[j].Key
+	})
+
+	return txs
+}
+
+//func (a *App) GetTxInputs(nodeID string) []txin {
+//	bc := blockchain.NewBlockchain(nodeID)
+//	defer bc.GetDB().Close()
+//	bci := bc.Iterator()
+//	var inputs []txin
 //
-//	for i, addr := range addresses {
-//		addrBal[i].Key = i + 1
-//		addrBal[i].Address = addr
-//		addrBal[i].Balance = getBalance(addr, nodeID)
+//	for {
+//		block := bci.Next()
+//
+//		for _, tx := range block.Transactions {
+//			for _, input := range tx.Vin {
+//				in := txin{
+//					Txid:      util.BytesToString(input.Txid),
+//					Vout:      input.Vout,
+//					Signature: util.BytesToString(input.Signature),
+//					PubKey:    util.BytesToString(input.PubKey),
+//				}
+//				inputs = append(inputs, in)
+//			}
+//		}
+//
+//		if len(block.PrevHash) == 0 {
+//			break
+//		}
 //	}
 //
-//	return addrBal
+//	return inputs
+//}
+
+//func (a *App) GetTxOutputs(nodeID string) []txout {
+//	bc := blockchain.NewBlockchain(nodeID)
+//	defer bc.GetDB().Close()
+//	bci := bc.Iterator()
+//	var outputs []txout
+//
+//	for {
+//		block := bci.Next()
+//
+//		for _, tx := range block.Transactions {
+//			for _, output := range tx.Vout {
+//				out := txout{
+//					Value:      output.Value,
+//					PubKeyHash: util.BytesToString(output.PubKeyHash),
+//				}
+//				outputs = append(outputs, out)
+//			}
+//
+//		}
+//
+//		if len(block.PrevHash) == 0 {
+//			break
+//		}
+//	}
+//
+//	return outputs
 //}
 
 //func (a *App) RefreshNode(nodeID string) {

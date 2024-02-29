@@ -9,7 +9,17 @@ const Refresh = () => {
 
   return (
     <div className="flex justify-center">
-      <Button onClick={() => StartNode(node, "")} isIconOnly color="success" aria-label="Refresh" radius="full">
+      <Button onClick={() => {
+        // if (node != "3000") {
+        //   StartNode("3000", "")
+        //   StartNode(node, "")
+        // } else {
+        //   StartNode(node, "")
+        // }
+        StartNode(node, "")
+
+      }}
+        isIconOnly color="success" aria-label="Refresh" radius="full">
         <RxReload className="text-xl" />
       </Button>
     </div>

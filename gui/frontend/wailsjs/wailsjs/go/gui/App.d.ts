@@ -13,6 +13,8 @@ export function GetAddressesWithBalances(arg1:string):Promise<Array<gui.balances
 
 export function GetBlockInfos(arg1:string):Promise<Array<gui.blocks>>;
 
+export function GetTransactions(arg1:string):Promise<Array<gui.transactions>>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function SendTransaction(arg1:string,arg2:string,arg3:number,arg4:string,arg5:boolean):Promise<void>;

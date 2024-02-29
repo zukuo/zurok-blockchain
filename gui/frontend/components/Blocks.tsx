@@ -10,9 +10,8 @@ import {
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow, useDisclosure
+  TableRow,
 } from "@nextui-org/react";
-import Popup from "./Popup";
 import Link from "next/link";
 
 const Blocks = () => {
@@ -46,11 +45,6 @@ const Blocks = () => {
     fetchBlocks()
   }, [blocks])
 
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const openModal = (item: any) => {
-    return Popup(`Block ${item.key}`, `Hash: ${item.hash}`, isOpen, onOpenChange)
-  }
-
   const loadingState =  blocks?.length === 0 ? "loading" : "idle"
 
   // Table Pagination
@@ -65,7 +59,7 @@ const Blocks = () => {
 
   return (
     <div className="flex justify-center">
-      <Table aria-label="Wallet Addresses with Balances"
+      <Table aria-label="Blocks"
              className="font-mono max-w-fit"
              color={"success"}
              bottomContent={pages > 1 ?

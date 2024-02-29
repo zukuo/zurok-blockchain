@@ -8,6 +8,7 @@ import Wallet from "./Wallet";
 import Send from "./Send";
 import Blocks from "./Blocks";
 import {NavContext} from "../pages";
+import Transactions from "./Transactions";
 
 export default function Navigation() {
     const navContext = useContext(NavContext)
@@ -66,7 +67,7 @@ export default function Navigation() {
         {
             id: "transactions",
             label: transactionsLabel(),
-            content: "Hello",
+            content: Transactions,
         },
         {
             id: "miner",

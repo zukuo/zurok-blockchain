@@ -22,6 +22,10 @@ export function GetBlockInfos(arg1) {
   return window['go']['gui']['App']['GetBlockInfos'](arg1);
 }
 
+export function GetTransactions(arg1) {
+  return window['go']['gui']['App']['GetTransactions'](arg1);
+}
+
 export function Greet(arg1) {
   return window['go']['gui']['App']['Greet'](arg1);
 }
