@@ -27,6 +27,7 @@ const Blocks = () => {
     pow: boolean,
   }[] = []
   const [blocks, setBlocks] = useState(blocksArr)
+  const blockCheck = blocks?.length === 0
 
   useEffect(() => {
     const fetchBlocks = () => {
@@ -43,7 +44,7 @@ const Blocks = () => {
       }
     }
     fetchBlocks()
-  }, [blocks])
+  }, [blocks, blockCheck])
 
   const loadingState =  blocks?.length === 0 ? "loading" : "idle"
 

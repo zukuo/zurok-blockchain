@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import {gui} from "../wailsjs/wailsjs/go/models";
 
-const Transactions = () => {
+const Transactions = (blockHeight: number = 0) => {
   const node = useContext(NodeContext)!.node
 
   let txsArr: gui.transactions[] = []
@@ -26,7 +26,10 @@ const Transactions = () => {
       try {
         GetTransactions(node)
           .then(result => {
-            setTransactions(result)
+            let filteredResults = result.filter((tx) =>
+              tx.height == blockHeight
+            );
+            setTransactions(filteredResults)
           })
           .catch(err => {
             console.log(err)
@@ -37,6 +40,7 @@ const Transactions = () => {
     }
     fetchTransactions()
   }, [transactions])
+
 
   const loadingState =  transactions?.length === 0 ? "loading" : "idle"
 
@@ -71,7 +75,7 @@ const Transactions = () => {
                </div> : null
              }>
         <TableHeader>
-          <TableColumn key="height">Block</TableColumn>
+          {/*<TableColumn key="height">Block</TableColumn>*/}
           <TableColumn key="transaction">Transaction</TableColumn>
           <TableColumn key="amount">Amount</TableColumn>
         </TableHeader>
@@ -80,7 +84,7 @@ const Transactions = () => {
             <TableRow key={item.key}>
               {(columnKey) => (
                 <TableCell className="m-auto text-center">
-                  {columnKey == "transaction"
+                  {(columnKey == "transaction")
                     ? <Link className={"text-small text-foreground hover:text-success transition"} href={{
                       pathname: "/transactions/[id]",
                       query: {

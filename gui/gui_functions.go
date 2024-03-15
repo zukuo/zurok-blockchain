@@ -124,6 +124,7 @@ func (a *App) StartNode(nodeID, minerAddress string) {
 	}
 
 	network.StartServerWithTime(nodeID, minerAddress, 3)
+	//network.StartServer(nodeID, minerAddress)
 }
 
 type blocks struct {
@@ -246,71 +247,6 @@ func (a *App) GetTransactions(nodeID string) []transactions {
 
 	return txs
 }
-
-//func (a *App) GetTxInputs(nodeID string) []txin {
-//	bc := blockchain.NewBlockchain(nodeID)
-//	defer bc.GetDB().Close()
-//	bci := bc.Iterator()
-//	var inputs []txin
-//
-//	for {
-//		block := bci.Next()
-//
-//		for _, tx := range block.Transactions {
-//			for _, input := range tx.Vin {
-//				in := txin{
-//					Txid:      util.BytesToString(input.Txid),
-//					Vout:      input.Vout,
-//					Signature: util.BytesToString(input.Signature),
-//					PubKey:    util.BytesToString(input.PubKey),
-//				}
-//				inputs = append(inputs, in)
-//			}
-//		}
-//
-//		if len(block.PrevHash) == 0 {
-//			break
-//		}
-//	}
-//
-//	return inputs
-//}
-
-//func (a *App) GetTxOutputs(nodeID string) []txout {
-//	bc := blockchain.NewBlockchain(nodeID)
-//	defer bc.GetDB().Close()
-//	bci := bc.Iterator()
-//	var outputs []txout
-//
-//	for {
-//		block := bci.Next()
-//
-//		for _, tx := range block.Transactions {
-//			for _, output := range tx.Vout {
-//				out := txout{
-//					Value:      output.Value,
-//					PubKeyHash: util.BytesToString(output.PubKeyHash),
-//				}
-//				outputs = append(outputs, out)
-//			}
-//
-//		}
-//
-//		if len(block.PrevHash) == 0 {
-//			break
-//		}
-//	}
-//
-//	return outputs
-//}
-
-//func (a *App) RefreshNode(nodeID string) {
-//	network.StartServer(nodeID, "")
-//}
-
-//func (a *App) StopNode(nodeID, minerAddress string) {
-//
-//}
 
 // getHostname returns the hostname of the node
 func getHostname() string {

@@ -3,9 +3,10 @@ import {Input} from "@nextui-org/input";
 import { IoMdArrowRoundDown } from "react-icons/io";
 import {Button} from "@nextui-org/button";
 import { IoSend } from "react-icons/io5";
-import {GetAddresses, SendTransaction} from "../wailsjs/wailsjs/go/gui/App";
+import {GetAddresses, GetAddressesWithBalances, SendTransaction} from "../wailsjs/wailsjs/go/gui/App";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import {NodeContext} from "../pages";
+import {gui} from "../wailsjs/wailsjs/go/models";
 
 const Send = () => {
   const node = useContext(NodeContext)!.node
@@ -49,6 +50,39 @@ const Send = () => {
     }
   }
 
+  // Get JSON of key, address, balance
+  let addressBalances: gui.balances[] = []
+  const [wallets, setWallets] = useState(addressBalances)
+  useEffect(() => {
+    const fetchWallets = () => {
+      try {
+        GetAddressesWithBalances(node)
+          .then(result => {
+            setWallets(result)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    fetchWallets()
+  }, [])
+
+
+  const selectMaxAddress = () => {
+    let maxVal = 0
+    let maxWal = ""
+    for (let i = 0; i < wallets.length; i++) {
+      if (wallets[i].balance > maxVal) {
+        maxVal = wallets[i].balance
+        maxWal = wallets[i].address
+      }
+    }
+    return maxWal
+  }
+
   // Update autocomplete
   let items: {key: number, address: string}[] = []
   for (let i = 0; i < addresses.length ; i++) {
@@ -65,6 +99,7 @@ const Send = () => {
           label="Sender Address"
           className="w-1/3"
           allowsCustomValue={true}
+          defaultInputValue={selectMaxAddress()}
           onSelectionChange={(key) => {setSelectedKey(key)}}
           onInputChange={(value) => {setFrom(value)}}
         >

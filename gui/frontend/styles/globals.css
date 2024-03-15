@@ -10,7 +10,7 @@ body {
   width: 100vw;
   background-color: rgba(10, 10, 10, 0.2) !important;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow: auto;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }

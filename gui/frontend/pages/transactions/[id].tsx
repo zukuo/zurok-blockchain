@@ -5,7 +5,6 @@ import {Card, CardBody} from "@nextui-org/card";
 import {NodeContext} from "../index";
 import {gui} from "../../wailsjs/wailsjs/go/models";
 import {GetTransactions} from "../../wailsjs/wailsjs/go/gui/App";
-import {element} from "prop-types";
 
 const TransactionPage = () => {
   const router = useRouter()

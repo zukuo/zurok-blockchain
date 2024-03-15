@@ -2,13 +2,14 @@ import React, {useContext} from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { MdWallet } from "react-icons/md";
 import {GrCubes, GrSend} from "react-icons/gr";
-import { AiOutlineTransaction } from "react-icons/ai";
 import {TbPick} from "react-icons/tb";
 import Wallet from "./Wallet";
 import Send from "./Send";
 import Blocks from "./Blocks";
 import {NavContext} from "../pages";
-import Transactions from "./Transactions";
+import {LuHardDriveDownload} from "react-icons/lu";
+import Receive from "./Receive";
+import Mine from "./Mine";
 
 export default function Navigation() {
     const navContext = useContext(NavContext)
@@ -34,10 +35,10 @@ export default function Navigation() {
         </div>
     }
 
-    const transactionsLabel = () => {
+    const receiveLabel = () => {
         return <div className="flex items-center space-x-2">
-            <AiOutlineTransaction className="text-lg"/>
-            <span>Transactions</span>
+            <LuHardDriveDownload className="text-lg"/>
+            <span>Receive</span>
         </div>
     }
 
@@ -65,14 +66,14 @@ export default function Navigation() {
             content: Blocks,
         },
         {
-            id: "transactions",
-            label: transactionsLabel(),
-            content: Transactions,
+            id: "receive",
+            label: receiveLabel(),
+            content: Receive,
         },
         {
             id: "miner",
             label: minerLabel(),
-            content: "Hello",
+            content: Mine,
         }
     ];
 

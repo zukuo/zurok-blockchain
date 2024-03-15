@@ -2,12 +2,10 @@ package network
 
 import (
 	"bytes"
-	"context"
 	"encoding/gob"
 	"encoding/hex"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"time"
 
@@ -414,33 +412,32 @@ func StartServerWithTime(nodeID, minerAddress string, timeDeadline int) {
 	ln, err := net.Listen(protocol, nodeAddress)
 	util.HandleError(err)
 
+	time.Sleep(3 * time.Second)
+	ln.Close()
+
 	bc := blockchain.NewBlockchain(nodeID)
 
 	if nodeAddress != KnownNodes[0] {
 		sendVersion(KnownNodes[0], bc)
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
+	for {
+		conn, err := ln.Accept()
+		util.HandleError(err)
+		go handleConnection(conn, bc)
+	}
+}
 
-	go func(ctx context.Context) {
-		for {
-			select {
-			case <-ctx.Done():
-				ln.Close()
-				return
-			default:
-			}
-			conn, err := ln.Accept()
-			if err != nil {
-				log.Panic(err)
-			}
-			go handleConnection(conn, bc)
-		}
-	}(ctx)
-
-	time.Sleep(2 * time.Second)
-	cancel()
-
+func CloseWithTimeout(ln net.Listener, timeout time.Duration) {
+	ch := make(chan struct{})
+	go func() {
+		ln.Close()
+		close(ch)
+	}()
+	select {
+	case <-ch:
+	case <-time.After(timeout):
+	}
 }
 
 func gobEncode(data interface{}) []byte {

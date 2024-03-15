@@ -9,7 +9,7 @@
   "frontend:dev": "echo dev",
   "frontend:dev:build": "echo dev",
   "frontend:dev:watcher": "npm run dev",
-  "frontend:dev:serverUrl": "http://localhost:3000",
+  "frontend:dev:serverUrl": "http://localhost:8080",
   "wailsjsdir": "gui/frontend/wailsjs",
   "author": {
     "name": "Eesa Ahmad",
