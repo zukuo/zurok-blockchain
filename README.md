@@ -1,47 +1,37 @@
-# The Zurok Blockchain
 
-## Instructions for Running
+<div align="center">
 
-### NODE 3000
-Create wallet and blockchain
-```bash
-go run main.go createwallet
-go run main.go createblockchain -address CENTRAL_NODE
-cp blockchain_3000.db blockchain_genesis.db
+<h3 align="center">Z U R O K</h3>
+<p align="center">
+A brand new blockchain sandbox tool!
+
+
+</p>
+</div>
+
+## About The Project
+
+My final year university project that built a functional cryptocurrency blockchain network, that allows for P2P connections. All encompassed in a modern front-end wallet user interface.
+
+The back-end responsible for handling the transactions and blocks within the blockchain, is written in Go. Whereas the front-end wallet utilises NextJS paired with TypeScript, of which both ends are connected together with the use of Wails.
+### Built With
+
+Here are the main technologies that were used:
+
+- [Go](https://go.dev/)
+- [Wails](https://wails.io/)
+- [NextJS](https://nextjs.org)
+- [TypeScript](https://www.typescriptlang.org/)
+
+### Prerequisites
+
+Ensure you have installed both Go and Wails for the application to run correctly.
+## Usage
+
+To run in development mode run:
+```sh
+wails dev
 ```
+## License
 
-### NODE 3001
-Run 3 times:
-```bash
-go run main.go createwallet
-```
-
-### NODE 3000
-```bash
-go run main.go -from CENTRAL_NODE -to WALLET_1 -amount 10 -mine
-go run main.go -from CENTRAL_NODE -to WALLET_2 -amount 10 -mine
-go run main.go startnode
-```
-
-### NODE 3001
-```bash
-cp blockchain_genesis.db blockchain_3001.db
-go run main.go startnode
-```
-Now all peers have been updated.
-
-### NODE 3002
-```bash
-cp blockchain_genesis.db blockchain_3002.db
-go run main.go createwallet
-go run main.go startnode -miner MINER_WALLET
-```
-
-### NODE 3002
-Should start mining a new block.
-
-### NODE 3001
-```bash
-go run main.go startnode
-```
-Downloads new blocks
+Distributed under the GPL-3.0 License. See [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.en.html) for more information.
