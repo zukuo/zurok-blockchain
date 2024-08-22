@@ -1,0 +1,18 @@
+{
+  "name": "Zurok Wallet",
+  "outputfilename": "gui",
+  "build:dir": "gui/build",
+  "frontend:dir": "gui/frontend",
+  "assetdir": "gui/frontend/out",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run export",
+  "frontend:dev": "echo dev",
+  "frontend:dev:build": "echo dev",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "http://localhost:8080",
+  "wailsjsdir": "gui/frontend/wailsjs",
+  "author": {
+    "name": "Eesa Ahmad",
+    "email": "eesa@xoio.us"
+  }
+}
