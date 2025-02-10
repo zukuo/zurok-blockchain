@@ -18,7 +18,7 @@ The back-end responsible for handling the transactions and blocks within the blo
 ### Screenshot
 
 <div align="center">
-<img width="600" alt="wallet-interface" src="https://github.com/user-attachments/assets/2e53a5ef-2a2b-4365-a419-ad9921984264">
+<img width="600" alt="wallet-interface" src="https://github.com/user-attachments/assets/6faffe4c-e438-453e-9e6e-5572d75e3b15">
 </div>
 
 ### Built With
